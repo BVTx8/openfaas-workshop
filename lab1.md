@@ -38,12 +38,12 @@ sudo docker run hello-world
 sudo docker version
 ```
 
-Để không sử dụng lệnh sudo mỗi lần chạy Docker
+Để không sử dụng lệnh `sudo` mỗi lần chạy Docker
 ```
 sudo usermod -aG docker your-user
 ```
 
-Gỡ cài đặt DockerDocker
+Gỡ cài đặt Docker
 ```
 sudo apt-get purge docker-ce docker-ce-cli containerd.io
 
@@ -98,13 +98,46 @@ docker login
 curl -s https://raw.githubusercontent.com/rancher/k3d/main/install.sh | bash
 ```
 
-- Bắt đầu tạo
+- Bắt đầu tạo cluster
 
 ```
 k3d create
 ```
 
 > k3d ver3 sử dụng lệnh `k3d cluster create`
+
+```
+export KUBECONFIG="$(k3d get-kubeconfig --name='k3s-default')"
+kubectl cluster-info 
+```
+
+Kiểm tra
+```
+k3d version
+```
+
+Để xóa k3d, ta dùng
+```
+k3d delete
+```
+
+> k3d ver3 xóa sử dụng `k3d cluster delete`
+
+### Triển khai OpenFaaS
+
+- Cài đặt arkade
+
+```
+curl -SLsf https://dl.get-arkade.dev/ | sudo sh
+```
+
+- Cài OpenFaaS
+
+```
+arkade install openfaas
+```
+
+> Hoặc cần load balancer sử dụng `arkade install openfaas --load-balancer`
 
 ```
 root@ubuntu:/home/tx8/Desktop# arkade install openfaas
@@ -167,39 +200,6 @@ faas-cli store deploy figlet \
 
 Thanks for using arkade!
 ```
-
-```
-export KUBECONFIG="$(k3d get-kubeconfig --name='k3s-default')"
-kubectl cluster-info 
-```
-
-Kiểm tra
-```
-k3d version
-```
-
-Để xóa k3d, ta dùng
-```
-k3d delete
-```
-
-> k3d ver3 xóa sử dụng `k3d cluster delete`
-
-### Triển khai OpenFaaS
-
-- Cài đặt arkade
-
-```
-curl -SLsf https://dl.get-arkade.dev/ | sudo sh
-```
-
-- Cài OpenFaaS
-
-```
-arkade install openfaas
-```
-
-> Hoặc cần load balancer sử dụng `arkade install openfaas --load-balancer`
 
 Nâng cao hơn, hãy cài OpenFaaS sử dụng [helm chart](https://github.com/openfaas/faas-netes/blob/master/chart/openfaas/README.md)
 
